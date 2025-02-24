@@ -1,6 +1,6 @@
 # Arden Boettcher
-# 2/11/25
-# Pygame Template
+# 2/24/25
+# Main
 
 import pygame
 import config
@@ -28,7 +28,7 @@ def main_events():
 def main():
   # The bool for the main loop
   running = True
-  
+
   while running:
 
     # Call events / update running
