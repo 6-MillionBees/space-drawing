@@ -3,13 +3,14 @@
 # Main
 
 import pygame
+import space
 import config
 pygame.init()
 
 
 # Setting up the window
 screen = pygame.display.set_mode((config.WIDTH, config.HEIGHT))
-pygame.display.set_caption("PLACEHOLDER")
+pygame.display.set_caption("Stars")
 
 # Setting up the clock
 clock = pygame.time.Clock()
@@ -27,7 +28,9 @@ def main_events():
 # Main loop
 def main():
   # The bool for the main loop
+  # ship = list(config.ship)
   running = True
+  stars = space.Space((config.WIDTH, config.HEIGHT), 10)
 
   while running:
 
@@ -36,6 +39,16 @@ def main():
 
     # Fills window
     screen.fill(config.WHITE)
+
+    stars.draw(screen)
+
+    stars.movedown()
+
+    # for cord in config.ship:
+
+
+
+    pygame.draw.polygon(screen, config.RED, config.ship)
 
     # Updates the Display
     pygame.display.flip()
