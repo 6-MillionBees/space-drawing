@@ -30,7 +30,7 @@ def main():
   # The bool for the main loop
   # ship = list(config.ship)
   running = True
-  stars = space.Space((config.WIDTH, config.HEIGHT), 10)
+  stars = space.Space((config.WIDTH, config.HEIGHT), 1000)
 
   while running:
 
@@ -40,15 +40,10 @@ def main():
     # Fills window
     screen.fill(config.WHITE)
 
+    # Star things
     stars.draw(screen)
 
     stars.movedown()
-
-    # for cord in config.ship:
-
-
-
-    pygame.draw.polygon(screen, config.RED, config.ship)
 
     # Updates the Display
     pygame.display.flip()
