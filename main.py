@@ -3,6 +3,8 @@
 # Main
 
 import pygame
+
+import ship
 import space
 import config
 pygame.init()
@@ -16,11 +18,10 @@ pygame.display.set_caption("Stars")
 clock = pygame.time.Clock()
 
 # Event handling
-def main_events():
-  for event in pygame.event.get():
-    # Quits the game when you press the x
-    if event.type == pygame.QUIT:
-      return False
+def main_events(event):
+  # Quits the game when you press the x
+  if event.type == pygame.QUIT:
+    return False
   return True
 
 
@@ -28,20 +29,25 @@ def main_events():
 # Main loop
 def main():
   # The bool for the main loop
-  # ship = list(config.ship)
   running = True
-  stars = space.Space((config.WIDTH, config.HEIGHT), 1000)
+  stars = space.Space((config.WIDTH, config.HEIGHT), 10)
+  player = ship.Ship()
 
   while running:
 
     # Call events / update running
-    running = main_events()
+    for event in pygame.event.get():
+      running = main_events(event)
+      player.events(event)
+
+    player.check_movement()
 
     # Fills window
     screen.fill(config.WHITE)
 
     # Star things
     stars.draw(screen)
+    player.draw(screen)
 
     stars.movedown()
 
