@@ -21,7 +21,7 @@ class Enemy:
 
   def update(self, dt):
     self.image = pg.Rect(self.pos, (10, 20))
-    if self.health <= 0;
+    if self.health <= 0:
       self.alive = False
 
 
