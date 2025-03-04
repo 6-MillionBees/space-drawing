@@ -35,6 +35,8 @@ def main():
 
   while running:
 
+    dt = clock.tick() / 1000
+
     # Call events / update running
     for event in pygame.event.get():
       running = main_events(event)
