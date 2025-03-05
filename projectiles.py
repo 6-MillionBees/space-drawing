@@ -19,12 +19,13 @@ class Projectile:
 
     self.image = pg.Rect(0, 0, 2, 3)
     self.image.center = self.pos
-    self.hitrect = self.image
+    self.hitrect = self.image.copy()
 
   def update(self, dt):
     self.pos[1] += self.speed * dt
     self.image.center = self.pos
     self.hitrect = self.image
+    print(dt)
 
   def draw(self, surface):
     pg.draw.rect(surface, self.color, self.image)

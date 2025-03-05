@@ -8,7 +8,7 @@ import config as c
 
 class Ship:
   def __init__(self):
-    self.ship = pg.image.load("sprites/ship.png")
+    self.ship = pg.image.load("sprites/Ship.png")
     self.ship.convert_alpha()
     self.pos = [100, 100]
     self.rect = self.ship.get_rect()

@@ -7,6 +7,7 @@ import ship
 import particles as part
 import projectiles as proj
 import enemies as e
+import config as c
 
 class Game:
   def __init__(self):
@@ -17,7 +18,12 @@ class Game:
     self.particle_group = pg.sprite.Group()
 
   def update(self, dt):
+    self.player.check_movement()
+
     self.particle_group.update(dt)
+
+    for proj in self.friendly_proj:
+      proj.update(dt)
 
     for proj in self.friendly_proj:
       for enemy in self.enemies:
@@ -40,6 +46,29 @@ class Game:
     self.spawn_explosion(object.pos, 40)
 
   def events(self, event):
+    self.player.events(event)
+    self.player.check_movement()
+
     if event.type == pg.KEYDOWN:
       if event.key == pg.K_SPACE:
-        self.friendly_proj.append()
+        self.friendly_proj.append(proj.Projectile(self.player.pos, c.BLUE, -5, 5))
+
+      if event.key == pg.K_s:
+        self.enemies.append(e.Enemy([50, 10]))
+
+
+
+  def draw(self, surface):
+    self.player.draw(surface)
+
+    for proj in self.friendly_proj:
+      proj.draw(surface)
+
+    for proj in self.enemy_proj:
+      proj.draw(surface)
+
+    for enemy in self.enemies:
+      enemy.draw(surface)
+
+    for particle in self.particle_group:
+      particle.draw(surface)

@@ -4,7 +4,7 @@
 
 import pygame
 
-import ship
+import game_class
 import space
 import config
 pygame.init()
@@ -31,25 +31,25 @@ def main():
   # The bool for the main loop
   running = True
   stars = space.Space((config.WIDTH, config.HEIGHT), 10)
-  player = ship.Ship()
+  game = game_class.Game()
+
+  dt = 0
 
   while running:
-
-    dt = clock.tick() / 1000
 
     # Call events / update running
     for event in pygame.event.get():
       running = main_events(event)
-      player.events(event)
+      game.events(event)
 
-    player.check_movement()
+    game.update(dt)
 
     # Fills window
     screen.fill(config.WHITE)
 
     # Star things
     stars.draw(screen)
-    player.draw(screen)
+    game.draw(screen)
 
     stars.movedown()
 
@@ -57,7 +57,7 @@ def main():
     pygame.display.flip()
 
     # Limits the framerate
-    clock.tick(config.FPS)
+    dt = clock.tick(config.FPS) / 1000
 
   # Close the pygame modules
   pygame.quit()
