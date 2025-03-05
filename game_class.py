@@ -14,10 +14,10 @@ from random import randint
 class Game:
   def __init__(self):
     self.player = ship.Ship()
-    self.friendly_proj_group: pg.sprite.Group = pg.sprite.Group()
+    self.friendly_proj_group: pg.sprite.Group[proj.Projectile] = pg.sprite.Group()
     self.enemy_proj: list[proj.Projectile] = []
-    self.enemies: pg.sprite.Group = pg.sprite.Group()
-    self.particle_group = pg.sprite.Group()
+    self.enemies: pg.sprite.Group[e.Enemy] = pg.sprite.Group()
+    self.particle_group: pg.sprite.Group[part.Particle] = pg.sprite.Group()
 
   def update(self, dt):
     self.player.check_movement()
@@ -42,10 +42,9 @@ class Game:
     part.Explosion(self.particle_group, pos, color, 0, size, weight)
 
 
-  def kill(self, object):
-    self.spawn_explosion(object.pos.copy(), 40, c.WHITE, 8)
-    for x in range(10):
-      part.Particle(self.particle_group, object.pos.copy(), c.WHITE, pg.math.Vector2(randint(-1, 1), randint(-1, 1)), 100, 50)
+  def kill(self, object: e.Enemy):
+    self.spawn_explosion(list(object.hitrect.center), 40, c.WHITE, 8)
+    part.Particle(self.particle_group, object.pos.copy(), c.WHITE, pg.math.Vector2(randint(-100, 100) / 100, randint(-100, 100) / 100), 100, 50)
 
 
   def events(self, event):
@@ -73,5 +72,4 @@ class Game:
     for enemy in self.enemies:
       enemy.draw(surface)
 
-    for particle in self.particle_group:
-      particle.draw(surface)
+    self.particle_group.draw(surface)
