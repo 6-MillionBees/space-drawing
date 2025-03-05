@@ -9,41 +9,44 @@ import projectiles as proj
 import enemies as e
 import config as c
 
+from random import randint
+
 class Game:
   def __init__(self):
     self.player = ship.Ship()
-    self.friendly_proj: list[proj.Projectile] = []
+    self.friendly_proj_group: pg.sprite.Group = pg.sprite.Group()
     self.enemy_proj: list[proj.Projectile] = []
-    self.enemies: list[e.Enemy] = []
+    self.enemies: pg.sprite.Group = pg.sprite.Group()
     self.particle_group = pg.sprite.Group()
 
   def update(self, dt):
     self.player.check_movement()
 
     self.particle_group.update(dt)
+    self.friendly_proj_group.update(dt)
 
-    for proj in self.friendly_proj:
-      proj.update(dt)
-
-    for proj in self.friendly_proj:
+    for proj in self.friendly_proj_group:
       for enemy in self.enemies:
         if enemy.is_hit(proj):
           enemy.hit(proj)
-          self.spawn_explosion(proj.pos, 10)
-          del proj
+          self.spawn_explosion(proj.pos, 10, c.WHITE, 5)
+          proj.kill()
 
     for enemy in self.enemies:
       enemy.update(dt)
       if not enemy.alive:
         self.kill(enemy)
-        del enemy
+        enemy.kill()
 
-  def spawn_explosion(self, pos, size, color):
-    part.Explosion(self.particle_group, pos, color, 0, size)
+  def spawn_explosion(self, pos, size, color, weight):
+    part.Explosion(self.particle_group, pos, color, 0, size, weight)
 
 
   def kill(self, object):
-    self.spawn_explosion(object.pos, 40)
+    self.spawn_explosion(object.pos.copy(), 40, c.WHITE, 8)
+    for x in range(10):
+      part.Particle(self.particle_group, object.pos.copy(), c.WHITE, pg.math.Vector2(randint(-1, 1), randint(-1, 1)), 100, 50)
+
 
   def events(self, event):
     self.player.events(event)
@@ -51,17 +54,17 @@ class Game:
 
     if event.type == pg.KEYDOWN:
       if event.key == pg.K_SPACE:
-        self.friendly_proj.append(proj.Projectile(self.player.pos, c.BLUE, -5, 5))
+        proj.Projectile(self.friendly_proj_group, self.player.pos.copy(), c.BLUE, -1000, 5)
 
       if event.key == pg.K_s:
-        self.enemies.append(e.Enemy([50, 10]))
+        e.Enemy(self.enemies, [40, 40])
 
 
 
   def draw(self, surface):
     self.player.draw(surface)
 
-    for proj in self.friendly_proj:
+    for proj in self.friendly_proj_group:
       proj.draw(surface)
 
     for proj in self.enemy_proj:

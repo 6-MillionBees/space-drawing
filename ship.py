@@ -38,9 +38,10 @@ class Ship:
       self.moveright()
 
   def events(self, event):
-    if event.type == pg.KEYDOWN:
-      if event.key == pg.K_SPACE:
-        self.fire()
+    # if event.type == pg.KEYDOWN:
+    #   if event.key == pg.K_SPACE:
+    #     self.fire()
+    pass
 
 
   def fire(self):

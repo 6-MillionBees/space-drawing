@@ -7,10 +7,12 @@ import config as c
 from projectiles import Projectile
 from random import randint
 
-class Enemy:
+class Enemy(pg.sprite.Sprite):
   def __init__(self,
+      groups: pg.sprite.Group,
       pos: list[int]
     ):
+    super().__init__(groups)
     self.alive = True
     self.pos = pos
     self.health = randint(10, 15)
