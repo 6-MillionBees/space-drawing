@@ -3,6 +3,7 @@
 # Partciles
 
 import pygame as pg
+from pygame.sprite import Group
 import config as c
 from random import randint
 
@@ -12,11 +13,9 @@ class Particle(pg.sprite.Sprite):
       pos: list[int],
       color: tuple[int],
       direction: pg.math.Vector2,
-      speed: float,
-      slow: float
+      speed: float
     ):
     super().__init__(groups)
-    self.slow = slow
     self.pos = pos
     self.color = color
     self.direction = direction
@@ -27,9 +26,8 @@ class Particle(pg.sprite.Sprite):
 
     self.create_surf()
 
-  def move(self, dt):
+  def move(self, dt: float):
     self.pos += self.direction * self.speed * dt
-    self.speed -= self.slow * dt
     self.rect.center = self.pos
 
   def fade(self, dt):
@@ -61,9 +59,8 @@ class Particle(pg.sprite.Sprite):
     self.image.set_colorkey(c.BLACK)
 
     self.rect = self.image.get_rect()
-    self.rect.center = self.pos
 
-    pg.draw.rect(self.image, c.RED, self.rect)
+    pg.draw.rect(self.image, self.color, self.rect)
 
 
   def draw(self, surface):
@@ -80,7 +77,7 @@ class Explosion(Particle):
       weight: int
     ):
     direction = pg.Vector2(0, 0)
-    super().__init__(groups, pos, color, direction, speed, 0)
+    super().__init__(groups, pos, color, direction, speed)
     self.t0 = pg.time.get_ticks()
     self.max_size = max_size
     self.size = 2
@@ -102,3 +99,33 @@ class Explosion(Particle):
 
   def draw(self, surface):
     pg.draw.circle(surface, self.color, self.pos, self.size, self.weight)
+
+
+
+class Slowed_Part(Particle):
+  def __init__(self, groups: Group, pos: list[int], color: tuple[int], direction: pg.Vector2, speed: float, slow: float):
+    super().__init__(groups, pos, color, direction, speed)
+    self.slow = slow
+    self.timer = 0
+    self.lifespan = 300
+
+  def move(self, dt: float):
+    self.pos += self.direction * self.speed * dt
+    self.speed -= self.slow * dt
+
+  def check_time(self):
+    if self.timer + self.lifespan <= pg.time.get_ticks():
+      self.kill()
+
+  def check_speed(self):
+    if self.speed <= 0:
+      self.speed = 0
+      self.slow = 0
+      self.check_time()
+
+  def update(self, dt):
+    self.move(dt)
+    self.fade(dt)
+    self.check_pos()
+    self.check_speed()
+    self.check_alpha()

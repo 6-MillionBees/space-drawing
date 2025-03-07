@@ -44,7 +44,8 @@ class Game:
 
   def kill(self, object: e.Enemy):
     self.spawn_explosion(list(object.hitrect.center), 40, c.WHITE, 8)
-    part.Particle(self.particle_group, object.pos.copy(), c.WHITE, pg.math.Vector2(randint(-100, 100) / 100, randint(-100, 100) / 100), 100, 50)
+    for x in range(10):
+      part.Slowed_Part(self.particle_group, object.pos.copy(), c.WHITE, pg.math.Vector2(randint(-100, 100) / 100, randint(-100, 100) / 100).normalize(), randint(80, 120), 100)
 
 
   def events(self, event):
@@ -72,4 +73,5 @@ class Game:
     for enemy in self.enemies:
       enemy.draw(surface)
 
-    self.particle_group.draw(surface)
+    for part in self.particle_group:
+      part.draw(surface)
