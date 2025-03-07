@@ -31,6 +31,7 @@ class Game:
           enemy.hit(proj)
           self.spawn_explosion(proj.pos, 10, c.WHITE, 5)
           proj.kill()
+          break
 
     for enemy in self.enemies:
       enemy.update(dt)
