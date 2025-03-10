@@ -13,6 +13,7 @@ class Projectile(pg.sprite.Sprite):
       speed: int,
       damage: int
     ):
+
     super().__init__(groups)
     self.pos = pos
     self.color = color
@@ -26,7 +27,8 @@ class Projectile(pg.sprite.Sprite):
   def update(self, dt):
     self.pos[1] += self.speed * dt
     self.image.center = self.pos
-    self.hitrect = self.image
+    self.hitrect = self.image.copy()
+    self.check_pos()
 
   def check_pos(self):
     if (

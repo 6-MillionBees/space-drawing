@@ -20,7 +20,9 @@ class Game:
     self.particle_group: pg.sprite.Group[part.Particle] = pg.sprite.Group()
 
   def update(self, dt):
+    print(len(self.friendly_proj_group))
     self.player.check_movement(dt)
+    self.check_firing(dt)
 
     self.particle_group.update(dt)
     self.friendly_proj_group.update(dt)
@@ -31,13 +33,12 @@ class Game:
           enemy.hit(proj)
           self.spawn_explosion(proj.pos, 10, c.WHITE, 5)
           proj.kill()
+          if not enemy.alive:
+            self.kill(enemy)
+            enemy.kill()
           break
 
-    for enemy in self.enemies:
-      enemy.update(dt)
-      if not enemy.alive:
-        self.kill(enemy)
-        enemy.kill()
+    self.enemies.update(dt)
 
   def spawn_explosion(self, pos, size, color, weight):
     part.Explosion(self.particle_group, pos, color, 0, size, weight)
@@ -49,12 +50,13 @@ class Game:
       part.Slowed_Part(self.particle_group, object.pos.copy(), c.WHITE, pg.math.Vector2(randint(-100, 100) / 100, randint(-100, 100) / 100).normalize(), randint(80, 120), 100)
 
 
-  def events(self, event):
+  def events(self, event: pg.event.Event):
     self.player.events(event)
 
     if event.type == pg.KEYDOWN:
       if event.key == pg.K_SPACE:
-        proj.Projectile(self.friendly_proj_group, self.player.pos.copy(), c.BLUE, -1000, 5)
+        self.player.fire(self.friendly_proj_group)
+        self.player.firing_timer = 0
 
       if event.key == pg.K_s:
         e.Enemy(self.enemies, [40, 40])
@@ -70,8 +72,13 @@ class Game:
     for proj in self.enemy_proj:
       proj.draw(surface)
 
-    for enemy in self.enemies:
+    for enemy in reversed(self.enemies.sprites()):
       enemy.draw(surface)
 
     for part in self.particle_group:
       part.draw(surface)
+
+  def check_firing(self, dt):
+    if pg.key.get_pressed()[pg.K_SPACE]:
+      if self.player.update_firetimer(dt):
+        self.player.fire(self.friendly_proj_group)

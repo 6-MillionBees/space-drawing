@@ -4,6 +4,7 @@
 
 import pygame as pg
 import config as c
+import projectiles as proj
 
 
 class Ship:
@@ -13,6 +14,9 @@ class Ship:
     self.pos = [100, 100]
     self.rect = self.ship.get_rect()
     self.hitrect = pg.Rect(0, 0, 25, 25)
+    self.firing_speed = 100
+    self.firing_timer = 0
+    self.firing_side = 10
 
     self.rect.center = self.pos
     self.hitrect.center = self.pos
@@ -71,3 +75,14 @@ class Ship:
     self.hitrect.center = self.pos
     if self.hitrect.right > c.WIDTH:
       self.pos[0] = c.WIDTH - (self.hitrect.width // 2)
+
+  def update_firetimer(self, dt) -> bool:
+    self.firing_timer += self.firing_speed * dt
+    return self.firing_timer >= 10
+
+  def fire(self, group):
+    temp_pos = self.pos.copy()
+    temp_pos[0] += self.firing_side
+    proj.Projectile(group, temp_pos, c.GREEN, -1000, 5)
+    self.firing_side *= -1
+    self.firing_timer -= 10

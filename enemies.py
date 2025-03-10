@@ -13,6 +13,7 @@ class Enemy(pg.sprite.Sprite):
       pos: list[int]
     ):
     super().__init__(groups)
+    self.color = c.RED
     self.alive: bool = True
     self.pos = pos
     self.health = randint(10, 15)
@@ -24,13 +25,18 @@ class Enemy(pg.sprite.Sprite):
   def define_surface(self):
     self.image = pg.Surface((20, 20))
     pg.draw.rect(self.image, c.RED, pg.Rect((0, 0), (20, 20)))
+    self.overlay = pg.Surface((20, 20))
+    self.overlay.fill(c.WHITE)
+    self.overlay.set_alpha(0)
     self.hitrect = self.image.get_rect()
     self.hitrect.topleft = self.pos
 
   def draw(self, surface):
     surface.blit(self.image, self.pos)
+    surface.blit(self.overlay, self.pos)
 
   def update(self, dt):
+    self.overlay.set_alpha(self.overlay.get_alpha() - 765 * dt)
     self.hitrect = self.image.get_rect()
     self.hitrect.topleft = self.pos
     if self.health <= 0:
@@ -59,6 +65,7 @@ class Enemy(pg.sprite.Sprite):
 
   def hit(self, proj: Projectile):
     self.health -= proj.damage
+    self.overlay.set_alpha(255)
 
 
 
