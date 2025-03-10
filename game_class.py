@@ -20,7 +20,7 @@ class Game:
     self.particle_group: pg.sprite.Group[part.Particle] = pg.sprite.Group()
 
   def update(self, dt):
-    self.player.check_movement()
+    self.player.check_movement(dt)
 
     self.particle_group.update(dt)
     self.friendly_proj_group.update(dt)
@@ -51,7 +51,6 @@ class Game:
 
   def events(self, event):
     self.player.events(event)
-    self.player.check_movement()
 
     if event.type == pg.KEYDOWN:
       if event.key == pg.K_SPACE:

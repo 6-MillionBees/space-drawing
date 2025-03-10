@@ -25,17 +25,17 @@ class Ship:
     surface.blit(self.ship, self.rect)
 
 
-  def check_movement(self):
+  def check_movement(self, dt):
     keys = pg.key.get_pressed()
 
     if keys[pg.K_UP]:
-      self.moveup()
+      self.moveup(dt)
     if keys[pg.K_DOWN]:
-      self.movedown()
+      self.movedown(dt)
     if keys[pg.K_LEFT]:
-      self.moveleft()
+      self.moveleft(dt)
     if keys[pg.K_RIGHT]:
-      self.moveright()
+      self.moveright(dt)
 
   def events(self, event):
     # if event.type == pg.KEYDOWN:
@@ -48,26 +48,26 @@ class Ship:
     print("pew")
 
 
-  def moveup(self):
-    self.pos[1] -= 5
+  def moveup(self, dt):
+    self.pos[1] -= 250 * dt
     self.hitrect.center = self.pos
     if self.hitrect.top < 0:
       self.pos[1] = 0 + (self.hitrect.height // 2)
 
-  def movedown(self):
-    self.pos[1] += 5
+  def movedown(self, dt):
+    self.pos[1] += 250 * dt
     self.hitrect.center = self.pos
     if self.hitrect.bottom > c.HEIGHT:
       self.pos[1] = c.HEIGHT - (self.hitrect.height // 2)
 
-  def moveleft(self):
-    self.pos[0] -= 8
+  def moveleft(self, dt):
+    self.pos[0] -= 250 * dt
     self.hitrect.center = self.pos
     if self.hitrect.left < 0:
       self.pos[0] = 0 + (self.hitrect.width // 2)
 
-  def moveright(self):
-    self.pos[0] += 8
+  def moveright(self, dt):
+    self.pos[0] += 250 * dt
     self.hitrect.center = self.pos
     if self.hitrect.right > c.WIDTH:
       self.pos[0] = c.WIDTH - (self.hitrect.width // 2)

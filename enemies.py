@@ -49,11 +49,11 @@ class Enemy(pg.sprite.Sprite):
   def check_pos(self):
     if self.hitrect.left <= 0:
       self.hitrect.left -= self.hitrect.left
-      self.direction = self.direction.reflect(self.direction)
+      self.direction = pg.Vector2(1, 0).normalize()
 
     if self.hitrect.right >= c.WIDTH:
-      self.hitrect.right -= c.WIDTH - self.hitrect.right
-      self.direction = self.direction.reflect(self.direction)
+      self.hitrect.right -= (self.hitrect.right - c.WIDTH) - 1
+      self.direction = pg.Vector2(-1, 0).normalize()
 
 
 
