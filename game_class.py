@@ -47,7 +47,7 @@ class Game:
   def kill(self, object: e.Enemy):
     self.spawn_explosion(list(object.hitrect.center), 40, c.WHITE, 8)
     for x in range(10):
-      part.Slowed_Part(self.particle_group, object.pos.copy(), c.WHITE, pg.math.Vector2(randint(-100, 100) / 100, randint(-100, 100) / 100).normalize(), randint(80, 120), 100)
+      part.Rainbow_Slowed_Part(self.particle_group, object.pos.copy(), c.WHITE, pg.math.Vector2(randint(-100, 100) / 100, randint(-100, 100) / 100).normalize(), randint(80, 120), 100)
 
 
   def events(self, event: pg.event.Event):

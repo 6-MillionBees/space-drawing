@@ -83,6 +83,6 @@ class Ship:
   def fire(self, group):
     temp_pos = self.pos.copy()
     temp_pos[0] += self.firing_side
-    proj.Projectile(group, temp_pos, c.GREEN, -1000, 5)
+    proj.Projectile(group, temp_pos, c.RED, -1000, 5)
     self.firing_side *= -1
     self.firing_timer -= 10

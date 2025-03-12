@@ -28,6 +28,7 @@ class Projectile(pg.sprite.Sprite):
     self.pos[1] += self.speed * dt
     self.image.center = self.pos
     self.hitrect = self.image.copy()
+    self.color = c.rainbow(self.color, 10)
     self.check_pos()
 
   def check_pos(self):
