@@ -4,7 +4,7 @@
 
 import pygame as pg
 from random import randint
-from math import sin, cos
+from math import sin, cos, radians
 
 # Screen size constants
 WIDTH = 500
@@ -49,7 +49,7 @@ def rainbow(color: list[int], step = 1):
 # Random Vector
 
 def rand_vector(min_angle = 0, max_angle = 360):
-  angle = randint(min_angle, max_angle)
+  angle = radians(randint(min_angle, max_angle))
   x = cos(angle)
   y = sin(angle)
   return pg.math.Vector2(x, y)
