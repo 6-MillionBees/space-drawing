@@ -98,7 +98,7 @@ class Ship:
     temp_pos[1] += 10
     temp_pos[0] += self.firing_side
     self.bullet_color = c.rainbow(self.bullet_color, 10)
-    proj.Projectile(group, temp_pos, self.bullet_color, -1000, 5)
+    proj.Projectile(group, temp_pos, self.bullet_color, 1000, 5, (4, 6))
     self.firing_side *= -1
     self.firing_timer -= 10
 

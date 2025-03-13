@@ -32,3 +32,7 @@ class Lobster_arm(pg.sprite.Sprite):
   def offset_rotate(self, dt):
     self.image_offset.rotate_ip(200 * dt)
     self.image_pos = self.pos + self.image_offset
+
+  def hit(self):
+
+  def get_hit(self, projectiles):

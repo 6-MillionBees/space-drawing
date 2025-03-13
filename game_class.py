@@ -32,6 +32,7 @@ class Game:
     for proj in self.friendly_proj_group:
       for enemy in self.enemies:
         if enemy.is_hit(proj):
+          proj.hit()
           enemy.hit(proj)
           self.spawn_explosion(proj.pos, 10, c.WHITE, 5)
           proj.kill()
