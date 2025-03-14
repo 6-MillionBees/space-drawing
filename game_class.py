@@ -47,7 +47,7 @@ class Game:
   def kill(self, object: e.Enemy):
     self.spawn_explosion(list(object.hitrect.center), 40, c.WHITE, 8)
     for x in range(10):
-      part.Slowed_Part(self.particle_group, object.pos.copy(), c.WHITE, pg.math.Vector2(randint(-100, 100) / 100, randint(-100, 100) / 100).normalize(), randint(80, 120), 100)
+      part.Slowed_Part(self.particle_group, object.pos.copy(), c.WHITE, pg.math.Vector2(randint(-100, 100) / 100, randint(-100, 100) / 100).normalize(), randint(180, 220), 300)
 
 
   def events(self, event: pg.event.Event):
@@ -59,7 +59,7 @@ class Game:
         self.player.firing_timer = 0
 
       if event.key == pg.K_s:
-        e.Enemy(self.enemies, [40, 40])
+        e.Enemy(self.enemies, [250, 50])
 
 
 

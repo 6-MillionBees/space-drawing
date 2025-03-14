@@ -51,7 +51,7 @@ class Particle(pg.sprite.Sprite):
     self.move(dt)
     self.fade(dt)
     self.check_pos()
-    self.check_alpha()
+    # self.check_alpha()
 
 
   def create_surf(self):
@@ -128,4 +128,7 @@ class Slowed_Part(Particle):
     self.fade(dt)
     self.check_pos()
     self.check_speed()
-    self.check_alpha()
+    # self.check_alpha()
+
+  def draw(self, surface):
+    surface.blit(self.image, self.pos)
