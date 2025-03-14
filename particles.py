@@ -128,7 +128,35 @@ class Slowed_Part(Particle):
     self.fade(dt)
     self.check_pos()
     self.check_speed()
-    # self.check_alpha()
+    self.check_alpha()
 
-  def draw(self, surface):
-    surface.blit(self.image, self.pos)
+
+
+class Rainbow_Slowed_Part(Slowed_Part):
+  def __init__(self,
+      groups: Group,
+      pos: list[int],
+      color: tuple[int],
+      direction: pg.Vector2,
+      speed: float,
+      slow: float
+    ):
+    super().__init__(groups, pos, color, direction, speed, slow)
+    self.color = (255, 0, 0)
+
+  def update(self, dt):
+    self.move(dt)
+    self.fade(dt)
+    self.check_pos()
+    self.check_speed()
+    self.check_alpha()
+    self.color = c.rainbow(self.color, 6)
+    pg.draw.rect(self.image, self.color, self.rect)
+
+  def create_surf(self):
+    self.image = pg.Surface((self.size, self.size)).convert_alpha()
+    self.image.set_colorkey(c.BLACK)
+
+    self.rect = self.image.get_rect()
+
+    pg.draw.rect(self.image, self.color, self.rect)

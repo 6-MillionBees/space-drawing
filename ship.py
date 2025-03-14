@@ -5,6 +5,8 @@
 import pygame as pg
 import config as c
 import projectiles as proj
+import particles as part
+from random import randint
 
 
 class Ship:
@@ -17,28 +19,39 @@ class Ship:
     self.firing_speed = 100
     self.firing_timer = 0
     self.firing_side = 10
+    self.bullet_color = c.RED
 
     self.rect.center = self.pos
     self.hitrect.center = self.pos
 
+    self.hit_timer = 0
+
+  def update(self, dt, group):
+    self.check_movement(dt)
+    self.check_firing(dt, group)
+    self.hit_timer -= dt
 
   def draw(self, surface: pg.Surface):
     self.hitrect.center = self.pos
     self.rect.center = self.pos
-    pg.draw.rect(surface, c.RED, self.hitrect, 2)
+    # pg.draw.rect(surface, c.RED, self.hitrect, 2)
     surface.blit(self.ship, self.rect)
 
+  def check_firing(self, dt, group):
+    if pg.key.get_pressed()[pg.K_i]:
+      if self.update_firetimer(dt):
+        self.fire(group)
 
   def check_movement(self, dt):
     keys = pg.key.get_pressed()
 
-    if keys[pg.K_UP]:
+    if keys[pg.K_w]:
       self.moveup(dt)
-    if keys[pg.K_DOWN]:
+    if keys[pg.K_s]:
       self.movedown(dt)
-    if keys[pg.K_LEFT]:
+    if keys[pg.K_a]:
       self.moveleft(dt)
-    if keys[pg.K_RIGHT]:
+    if keys[pg.K_d]:
       self.moveright(dt)
 
   def events(self, event):
@@ -82,7 +95,18 @@ class Ship:
 
   def fire(self, group):
     temp_pos = self.pos.copy()
+    temp_pos[1] += 10
     temp_pos[0] += self.firing_side
-    proj.Projectile(group, temp_pos, c.GREEN, -1000, 5)
+    self.bullet_color = c.rainbow(self.bullet_color, 10)
+    proj.Projectile(group, temp_pos, self.bullet_color, 1000, 5, (4, 6))
     self.firing_side *= -1
     self.firing_timer -= 10
+
+  # def dash(self, dt):
+
+  def hit(self, group):
+    if self.hit_timer <= 0:
+      part.Explosion(group, self.pos.copy(), c.WHITE, 0, 20, 8)
+      for x in range(10):
+        part.Rainbow_Slowed_Part(group, self.pos.copy(), c.RED, c.rand_vector(), randint(180, 220), 300)
+      self.hit_timer = 0.5
