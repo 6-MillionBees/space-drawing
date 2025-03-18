@@ -142,7 +142,7 @@ class Rainbow_Slowed_Part(Slowed_Part):
       slow: float
     ):
     super().__init__(groups, pos, color, direction, speed, slow)
-    self.color = (255, 0, 0)
+    self.color = color
 
   def update(self, dt):
     self.move(dt)
